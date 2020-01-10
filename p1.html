@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>p1</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <input id="point" type="number" v-model="point" />
+      <template v-if="point >100">
+        <div>ชีวิตเกินร้อยไม่มีนะจ๊ะ</div>
+      </template>
+      <template v-else-if="point >=80">
+        <div>A</div>
+      </template>
+      <template v-else-if="point >=70">
+        <div>B</div>
+      </template>
+      <template v-else-if="point >=60">
+        <div>C</div>
+      </template>
+      <template v-else-if="point >=50">
+        <div>D</div>
+      </template>
+      <template v-else-if="point >=0">
+        <div>F</div>
+      </template>
+      <template v-else>
+        <div>คะแนนมะมีติดลบนะจ๊ะ</div>
+      </template>
+    </div>
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data: {
+          point: 0
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>P3.1</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <input type="number" v-model="liter" />
+      <div v-for="(oil,index) in oilPrices" :key="index">
+        <input type="radio" :value="index" v-model="picked" />
+        <label>{{oil.oil}}</label>
+      </div>
+      <span>Picked:{{oilPick}} {{ cost }} บาท/ลิตร</span>
+      <div>จำนวน {{ liter }} ลิตร</div>
+      <div>ราคารวม {{ price }} บาท</div>
+      <button @click="paid">จ่ายเงิน</button>
+
+      <h2>ยอดรวม {{op}} บาท</h2>
+      <div v-for="(pp, index) in paided">
+        {{index+1}}.{{pp.oil}},{{pp.cost}},{{pp.total}}
+      </div>
+    </div>
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data: {
+          cost: 0,
+          oilPick: "",
+          price: 0,
+          liter: 0,
+          picked: null,
+          test: 0,
+          p: null,
+          oilPrices: [
+            {
+              id: 1,
+              oil: "แก๊สโซฮอล์ 95",
+              cost: 26.45
+            },
+            {
+              id: 2,
+              oil: "แก๊สโซฮอล์ 91",
+              cost: 26.18
+            },
+            {
+              id: 3,
+              oil: "แก๊สโซฮอล์ E20",
+              cost: 23.44
+            },
+            {
+              id: 4,
+              oil: "แก๊สโซฮอล์ E85",
+              cost: 19.04
+            },
+            {
+              id: 5,
+              oil: "เบนซิน 95",
+              cost: 33.86
+            },
+            {
+              id: 6,
+              oil: "ดีเซล",
+              cost: 27.39
+            },
+            {
+              id: 7,
+              oil: "ดีเซล B10",
+              cost: 25.39
+            },
+            {
+              id: 8,
+              oil: "ดีเซล B20",
+              cost: 24.39
+            },
+            {
+              id: 9,
+              oil: "ดีเซลพรีเมี่ยม",
+              cost: 31.24
+            },
+            {
+              id: 10,
+              oil: "แก๊ส NGV",
+              cost: 15.62
+            }
+          ],
+          paided: [],
+          op: 0
+        },
+        watch: {
+          picked: function(val) {
+            this.oilPick = this.oilPrices[this.picked].oil;
+            this.cost = this.oilPrices[this.picked].cost;
+          },
+          liter: function(val) {
+            this.price = this.oilPrices[this.picked].cost * this.liter;
+          }
+        },
+        methods: {
+          paid: function() {
+            var p = {
+              oil: "",
+              cost: 0,
+              total: 0
+            };
+            p.oil = this.oilPrices[this.picked].oil;
+            p.cost = this.oilPrices[this.picked].cost;
+            p.total = this.price;
+            this.op += this.price;
+            this.paided.push(p);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

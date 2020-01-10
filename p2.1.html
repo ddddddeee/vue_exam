@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>p2.1</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+</head>
+
+<body>
+    <div id="app">
+        <div>{{led[index]}}</div>
+        <button @click="changeLed">เปลี่ยนไฟ</button>
+
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                index: 0,
+                led: ['green', 'yellow', 'red']
+            }, methods: {
+                changeLed: function () {
+                    this.index++;
+                    if (this.index > 2) this.index = 0;
+                   
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>
