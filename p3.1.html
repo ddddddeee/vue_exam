@@ -10,32 +10,42 @@
 
   <body>
     <div id="app">
-      <input type="number" v-model="liter" />
-      <div v-for="(oil,index) in oilPrices" :key="index">
+      <input type="number" v-model="liter" /><br><br>
+
+      <!-- Loop to creat radio button -->
+      <div v-for="(oilList,index) in oilPrices" :key="index">
         <input type="radio" :value="index" v-model="picked" />
-        <label>{{oil.oil}}</label>
-      </div>
-      <span>Picked:{{oilPick}} {{ cost }} บาท/ลิตร</span>
+        <label>{{oilList.oil}}</label>
+      </div><br>
+      <!-- show oil pick by watch -->
+      <span>Picked : {{oilPick.oil}} {{ oilPick.cost }} บาท/ลิตร</span>
+
+      <!-- show liter by v-model -->
       <div>จำนวน {{ liter }} ลิตร</div>
-      <div>ราคารวม {{ price }} บาท</div>
+
+      <!-- update one time prize by watch picke and liter -->
+      <div>ราคารวม {{ oneTimePrice }} บาท</div><br>
       <button @click="paid">จ่ายเงิน</button>
 
-      <h2>ยอดรวม {{op}} บาท</h2>
-      <div v-for="(pp, index) in paided">
-        {{index+1}}.{{pp.oil}},{{pp.cost}},{{pp.total}}
+      <h2>ยอดรวม {{totalPrice}} บาท</h2>
+      <div v-for="(paid, index) in paidHistory">
+        {{index+1}}.{{paid.oil}}({{paid.cost}}) : {{paid.totalPrice}}
       </div>
     </div>
     <script>
       var app = new Vue({
         el: "#app",
         data: {
-          cost: 0,
-          oilPick: "",
-          price: 0,
-          liter: 0,
           picked: null,
-          test: 0,
-          p: null,
+          oilPick: {
+            id: null,
+            oil: null,
+            cost: null
+          },
+          liter: 0,
+          oneTimePrice: 0,
+          totalPrice: 0,
+          paidHistory: [],
           oilPrices: [
             {
               id: 1,
@@ -87,31 +97,33 @@
               oil: "แก๊ส NGV",
               cost: 15.62
             }
-          ],
-          paided: [],
-          op: 0
+          ]
         },
         watch: {
+          // update picked and one time price
           picked: function(val) {
-            this.oilPick = this.oilPrices[this.picked].oil;
-            this.cost = this.oilPrices[this.picked].cost;
+            this.oilPick = this.oilPrices[this.picked];
+            this.oneTimePrice = this.oilPick.cost * this.liter;
           },
+          // updateone time price
           liter: function(val) {
-            this.price = this.oilPrices[this.picked].cost * this.liter;
+            this.oneTimePrice = this.oilPick.cost * this.liter;
           }
         },
         methods: {
+          //creat bill object and add in to array
+          //and update total price
           paid: function() {
-            var p = {
+            var oneTimepaid = {
               oil: "",
               cost: 0,
-              total: 0
+              totalPrice: 0
             };
-            p.oil = this.oilPrices[this.picked].oil;
-            p.cost = this.oilPrices[this.picked].cost;
-            p.total = this.price;
-            this.op += this.price;
-            this.paided.push(p);
+            oneTimepaid.oil = this.oilPick.oil;
+            oneTimepaid.cost = this.oilPick.cost;
+            oneTimepaid.totalPrice = this.oneTimePrice;
+            this.totalPrice += this.oneTimePrice;
+            this.paidHistory.push(oneTimepaid);
           }
         }
       });
